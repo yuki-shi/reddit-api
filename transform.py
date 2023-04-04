@@ -4,7 +4,7 @@ import os.path
 from utils import str_to_datetime
 
 
-def prepare_csv(posts, data_limite):
+def prepare_csv(posts: list, data_limite: str) -> None:
   df = pd.DataFrame(posts, columns=['title',
                                     'author',
                                     'flair',

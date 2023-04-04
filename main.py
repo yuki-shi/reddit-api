@@ -3,7 +3,7 @@ from transform import prepare_csv
 
 
 def main():
-  data_limite = '2023-03-20' # em formato #%Y-%m-%d
+  data_limite = '2023-03-01' # em formato #%Y-%m-%d
   subreddit = 'r/cats'
 
   reddit = Reddit()

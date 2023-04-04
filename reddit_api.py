@@ -29,7 +29,8 @@ class Reddit():
         return response.json()
 
 
-    def get_posts_data(self, data_limite, subreddit):
+    #TODO: aceitar valor data inicial e data final
+    def get_posts_data(self, data_limite: str, subreddit: str) -> list:
         params = {
            'limit': 100 #limite é 100
         }
