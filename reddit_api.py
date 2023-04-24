@@ -24,12 +24,13 @@ class Reddit():
                     'password': self.password}
         headers = {'User-Agent': self.user_agent}
 
-        response = requests.post("https://www.reddit.com/api/v1/access_token", auth=client_auth, data=post_data, headers=headers)
+        response = requests.post("https://www.reddit.com/api/v1/access_token", 
+                                 auth=client_auth, 
+                                 data=post_data,
+                                 headers=headers)
         print('Token ok!')
         return response.json()
 
-
-    #TODO: aceitar valor data inicial e data final
     def get_posts_data(self, data_limite: str, subreddit: str) -> list:
         params = {
            'limit': 100 #limite é 100
@@ -41,8 +42,12 @@ class Reddit():
         data_limite = str_to_datetime(data_limite)
         posts = []
 
-        while data_final > data_limite:
-            response = json.loads(requests.get(f'{url}?after={after}', params=params, headers=self.headers).text)
+        # O limite da API para sua listagem é 1k, mesmo com paginação
+        #TODO: agora a lógica de limite de datas vai ocorrer no processamento.
+        while len(posts) <= 1000:
+            response = json.loads(requests.get(f'{url}?after={after}', 
+                                               params=params, 
+                                               headers=self.headers).text)
 
             for post in response['data']['children']:
                 post = post['data']
@@ -50,12 +55,15 @@ class Reddit():
                               post['author'], 
                               post['link_flair_text'],
                               post['ups'],
-                              post['downs'],
+                              #post['downs'],
                               post['url'],
                               timestamp_to_datetime(post['created']),
                               post['selftext']])
 
-            data_final = timestamp_to_datetime(post['created']) #time delta (-3)
+            #data_final = timestamp_to_datetime(post['created']) #time delta (-3)
             after = response['data']['after']
+
+
+        print('Extação ok!')
         return posts
 
